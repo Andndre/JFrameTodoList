@@ -36,24 +36,26 @@ public class Project {
 		Connection connection = DatabaseManager.getConnection();
 		List<Project> projects = new ArrayList<>();
 		try {
-		    PreparedStatement statement = connection.prepareStatement(GET_ALL_PROJECT);
-		    ResultSet resultSet = statement.executeQuery();
-		    while (resultSet.next()) {
-		        int id = resultSet.getInt("id");
-		        String judul = resultSet.getString("judul");
-		        Project project = new Project(id, judul);
-		        projects.add(project);
-					}
-					resultSet.close();
-					statement.close();
-				} catch (SQLException e) {
-		    e.printStackTrace();
+			PreparedStatement statement = connection.prepareStatement(GET_ALL_PROJECT);
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				int id = resultSet.getInt("id");
+				String judul = resultSet.getString("judul");
+				Project project = new Project(id, judul);
+				projects.add(project);
+			}
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		} finally {
-		    try {
-		        connection.close();
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+					e.printStackTrace();
+			}
 		}
 		return projects;
 	}
